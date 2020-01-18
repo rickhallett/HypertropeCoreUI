@@ -1,41 +1,67 @@
 <template>
-    <q-page class="">
+    <q-page class="flex flex-center">
         <q-card v-show="showCard" flat bordered class="card q-ma-md">
             <q-card-section>
                 <div class="text-h6 text-center">Log Your Focus...</div>
             </q-card-section>
 
-            <q-card-section class="text-center q-gutter-sm">
-                <q-select dense v-model="workout.selectedExercise" :options="exercisesAvailable" label="Exercise"></q-select>
+            <q-card-section class="">
+<!--                <q-select dense options-cover v-model="workout.selectedExercise" :options="exercisesAvailable"></q-select>-->
+                <q-btn  :icon="showExercises ? 'expand_more' : 'chevron_right'" class="full-width" @click="showExercises = !showExercises">Select Exercise</q-btn>
+                <q-slide-transition>
+                    <q-option-group
+                        v-show="showExercises"
+                        v-model="workout.selectedExercise"
+                        :options="exercisesAvailable"
+                        color="primary"
+                    />
+                </q-slide-transition>
+
             </q-card-section>
 
             <div v-for="(set, i) in workout.sets" class="q-gutter-sm">
 
-                <q-card-section class="q-py-sm" label="">
-                    <q-input dense v-model="set.weight" :label="'Weight: Set( ' + (i + 1) + ' )'"></q-input>
-                    <q-select dense v-model="set.reps" :options="reps" label="Reps"></q-select>
+                <q-card-section class="q-py-sm row justify-around">
+                    <div>
+                        <q-card-section class="text-primary set-number">
+                            {{i + set.abbrev}}
+                        </q-card-section>
+                        </div>
+                    <div>
+                        <q-input dense v-model="set.weight" label="Weight" suffix="kg" type="number"></q-input>
+                        <q-input dense v-model="set.reps" label="Reps" type="number"></q-input>
+                    </div>
+
                 </q-card-section>
 
-                <div class="row q-mb-xl">
+                <div class="row q-mb-lg">
                     <q-separator color="blue" :inset="true" class="q-mt-lg set-separator"/>
                     <q-icon name="donut_small" color="blue" size="18px" class="q-pr-md q-pt-lg"></q-icon>
                 </div>
 
             </div>
 
-            <q-card-section class="text-center">
-                <q-icon name="add" size="20px" @click="addNewSet"></q-icon>
+            <q-card-section v-show="workout.sets.length > 0">
+                <q-input v-model="workout.notes" autogrow placeholder="Notes..."/>
+            </q-card-section>
+
+            <q-card-section class="row justify-around">
+                <q-icon name="delete_outline" size="36px" color="negative" class="q-mr-md" @click="removeLastSet"></q-icon>
+                <q-icon v-show="workout.selectedExercise" name="add" size="36px" class="q-mr-md" @click="addNewSet"></q-icon>
+                <q-icon name="done" size="36px" color="positive" @click="saveWorkout"></q-icon>
             </q-card-section>
 
 <!--            <q-space/>-->
+<!--            q-field row no-wrap items-start q-select q-field&#45;&#45;auto-height q-select&#45;&#45;without-input q-field&#45;&#45;standard q-field&#45;&#45;dense q-field&#45;&#45;dark-->
+<!--            q-field row no-wrap items-start q-select q-field&#45;&#45;auto-height q-select&#45;&#45;without-input q-field&#45;&#45;standard q-field&#45;&#45;float q-field&#45;&#45;dense q-field&#45;&#45;dark-->
 
-<!--            <transition appear-->
-<!--                        enter-active-class="animated fadeIn"-->
-<!--                        leave-active-class="animated fadeOut">-->
-<!--                <div v-show="showLogo" class="flex flex-center log-logo" >-->
-<!--                    <q-btn dense flat size="132px" icon="donut_small" color="blue"/>-->
-<!--                </div>-->
-<!--            </transition>-->
+            <transition appear
+                        enter-active-class="animated fadeIn"
+                        leave-active-class="animated fadeOut">
+                <div v-show="showLogo" class="flex flex-center log-logo" >
+                    <q-icon dense flat size="190px" name="donut_small" color="blue"/>
+                </div>
+            </transition>
 
         </q-card>
 
@@ -55,23 +81,46 @@ export default {
             loading: false,
             showCard: true,
             showLogo: false,
+            showExercises: false,
             exercisesAvailable: [],
             workout: {
                 selectedExercise: null,
-                sets: []
-            },
-            selectedReps: null,
-            selectedWeight: null,
-            reps: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
-
+                sets: [],
+                notes: null
+            }
         }
     },
     methods: {
         addNewSet() {
+            if (this.showExercises) this.showExercises = false
             this.workout.sets.push({
+                exercise: this.workout.selectedExercise,
                 weight: null,
-                reps: null
+                reps: null,
+                abbrev: this.getAbbrev(this.workout.selectedExercise)
             })
+        },
+        removeLastSet() {
+            this.workout.sets.pop()
+        },
+        saveWorkout() {
+            console.log('sending data:', this.workout)
+
+            const payload = {
+                sets: this.workout.sets.map(set => {
+                    return {
+                        exercise: set.exercise,
+                        weight: Number.parseInt(set.weight),
+                        reps: Number.parseInt(set.reps)
+                    }
+                }),
+                notes: ''
+            }
+
+            this.$axios.post('https://localhost:5001/api/workout', payload).then(res => console.log(res))
+        },
+        getAbbrev(exerciseId) {
+            return this.exercisesAvailable.find(e => e.value === exerciseId).abbrev
         }
     },
     created() {
@@ -82,7 +131,9 @@ export default {
             this.exercisesAvailable = res.data.exercises.map(ex => {
                 return {
                     label: ex.name,
-                    value: ex.exerciseId
+                    value: ex.name,
+                    id: ex.exerciseId,
+                    abbrev: ex.abbreviation
                 }
             })
             console.log('exercises available:', this.exercisesAvailable)
@@ -103,6 +154,14 @@ export default {
 
     .set-separator {
         height: 2px;
+    }
+
+    .set-number {
+        font-size: 34px;
+    }
+
+    .q-field--float {
+
     }
 
     /*.log-logo {*/
