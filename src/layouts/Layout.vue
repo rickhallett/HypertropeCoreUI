@@ -85,20 +85,10 @@
         font-size: 18px;
     }
 
-    .app-header--bold {
-        font-size: 14px;
-        display: inline;
-        transform: translateY(-10px);
-        margin-bottom: 10px;
-        padding-bottom: 10px;
-    }
-
     .app-header--core {
         font-size: 10px;
         font-weight: bolder;
         color: #3aa6e3;
-        /*color: #102030;*/
-        /*color: #671315;*/
         padding-left: 2px;
     }
 </style>

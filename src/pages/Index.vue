@@ -11,7 +11,7 @@
                     enter-active-class="animated fadeIn"
                     leave-active-class="animated fadeOut"
                 >
-                    <div v-for="(quote, index) in quoteSelection" :key="index">
+                    <div v-for="(quote) in quoteSelection" :key="quote.quoteId">
                         <quote-card :author="quote.author" :body="quote.body"></quote-card>
                     </div>
                 </transition-group>
@@ -71,12 +71,12 @@
                 this.$axios.get('https://localhost:5001/api/quote')
                     .then(res => {
                         this.quotes = res.data.quotes
+                        console.log('quotes:', this.quotes)
                         this.loading = false
                         this.showCard = true
                         setTimeout(() => this.showLogo = true, 500)
                     })
-            }, 1000)
-
+            }, 500)
         },
         created() {
 
