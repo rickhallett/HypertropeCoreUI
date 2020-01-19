@@ -10,7 +10,7 @@
             </q-card-section>
 
             <transition appear
-                        enter-active-class="animated fadeInUp"
+                        enter-active-class="animated jello"
                         leave-active-class="animated fadeOut">
                 <div v-show="showLogo" class="flex flex-center">
                     <q-btn dense flat size="132px" icon="donut_small" color="orange"/>
@@ -38,7 +38,7 @@
             }
         },
         created() {
-            setTimeout(() => this.showLogo = true, 1000)
+            setTimeout(() => this.showLogo = true, 250)
 
             this.$axios.get('https://localhost:5001/api/workout').then(res => {
                 console.log('response:', res)
