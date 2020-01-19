@@ -3,8 +3,8 @@
         <q-header elevated>
 
             <q-bar style="height: 50px;">
-                <q-btn dense flat size="16px" icon="donut_small"/>
-                <div v-show="showTitle" class="text-weight-bold text-secondary app-header row">
+                <q-btn dense flat size="16px" icon="donut_small" @click="toggleDarkMode"/>
+                <div v-show="showTitle" class="text-weight-bold text-secondary app-header row" @click="navToHome">
                     <div class="app-header--hyper">Hypertrope</div>
                     <div class="app-header--core">Core</div>
                 </div>
@@ -106,11 +106,18 @@
 <script>
     export default {
         name: 'MyLayout',
-
         data() {
             return {
                 showTitle: true,
                 search: ''
+            }
+        },
+        methods: {
+            toggleDarkMode() {
+                this.$q.dark.toggle()
+            },
+            navToHome() {
+                this.$router.push({ path: '/' }).catch(err => {})
             }
         }
     }

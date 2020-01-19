@@ -18,7 +18,8 @@ module.exports = function (ctx) {
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
       'roboto-font', // optional, you are not bound to it
-      'material-icons' // optional, you are not bound to it
+      'material-icons', // optional, you are not bound to it
+      'fontawesome-v5'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -48,7 +49,7 @@ module.exports = function (ctx) {
           warning: '#f5dd9a'
         },
 
-        dark: true
+        dark: false
       }
     },
 

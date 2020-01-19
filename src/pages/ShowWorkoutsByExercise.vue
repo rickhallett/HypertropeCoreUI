@@ -16,7 +16,7 @@
                     </q-item>
                     <q-list v-if="exercise.Active" v-for="(set, sIndex) in exercise.Sets" :key="'set' + sIndex">
                         <q-item>
-                            <q-item-section></q-item-section>
+                            <q-item-section style="color: #9ddeeb; font-size: 20px;">{{sIndex + 1}}</q-item-section>
                             <q-item-section style="font-size: 10px; text-align: end">
                                 <q-list v-for="(key, kIndex) in Object.keys(set)" :key="'key' + kIndex">
                                     {{key}}
