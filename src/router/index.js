@@ -3,8 +3,8 @@ import VueRouter from 'vue-router'
 
 import routes from './routes'
 
-Vue.prototype.$domain = 'https://localhost:5001'
-// Vue.prototype.$domain = 'https://hypertropecore3.azurewebsites.net'
+// Vue.prototype.$domain = 'https://localhost:5001'
+Vue.prototype.$domain = 'https://hypertropecore3.azurewebsites.net'
 
 Vue.use(VueRouter)
 

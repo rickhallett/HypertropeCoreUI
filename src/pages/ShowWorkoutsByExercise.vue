@@ -81,7 +81,7 @@
         created() {
             setTimeout(() => this.showLogo = true, 250)
 
-            this.$axios.get('https://localhost:5001/api/workout/grouped/exercise').then(res => {
+            this.$axios.get(`${this.$domain}/api/workout/grouped/exercise`).then(res => {
                 this.rawData = res.data.data.exercises
                 console.log('raw data:', this.rawData)
 

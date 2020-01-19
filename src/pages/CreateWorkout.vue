@@ -130,7 +130,7 @@ export default {
                 notes: this.workout.notes
             }
 
-            this.$axios.post('https://localhost:5001/api/workout', payload)
+            this.$axios.post(`${this.$domain}/api/workout`, payload)
                 .then(res => {
                     console.log(res)
                     if (res.status === 200) {
@@ -161,7 +161,7 @@ export default {
     created() {
         setTimeout(() => this.showLogo = true, 500)
 
-        this.$axios.get('https://localhost:5001/api/exercise').then(res => {
+        this.$axios.get(`${this.$domain}/api/exercise`).then(res => {
             console.log(res)
             this.exercisesAvailable = res.data.exercises.map(ex => {
                 return {

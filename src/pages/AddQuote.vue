@@ -59,7 +59,7 @@
                     author: this.quote.author
                 }
 
-                this.$axios.post('https://localhost:5001/api/quote', payload)
+                this.$axios.post(`${this.$domain}/api/quote`, payload)
                     .then(res => {
                         if (res.status === 200) {
                             this.$q.notify({
