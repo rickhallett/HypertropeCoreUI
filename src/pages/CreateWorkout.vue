@@ -48,7 +48,8 @@
             <q-card-section class="row justify-around">
                 <q-icon name="delete_outline" size="36px" color="negative" class="q-mr-md" @click="removeLastSet"></q-icon>
                 <q-icon v-show="workout.selectedExercise" name="add" size="36px" class="q-mr-md" @click="addNewSet"></q-icon>
-                <q-icon name="done" size="36px" color="positive" @click="saveWorkout"></q-icon>
+                <q-icon v-if="dataValid" name="done" size="36px" color="positive" @click="saveWorkout"></q-icon>
+                <q-icon v-else name="info" size="36px" color="amber" @click="promptUserForWorkouts"></q-icon>
             </q-card-section>
 
             <q-space/>
@@ -91,19 +92,27 @@ export default {
         }
     },
     computed: {
-        // TODO: find a way to validate data client side, this doesn't work
         dataValid() {
-            if (this.workout.sets.length <= 0) return false
+            let valid = true
+
+            if (this.workout.sets.length <= 0) valid = false
 
             this.workout.sets.forEach(set => {
-                if (typeof set.weight === 'number') return false
-                if (typeof set.reps === 'number') return false
+                if (!set.weight || typeof set.weight === 'number') valid = false
+                if (!set.reps || typeof set.reps === 'number') valid = false
             })
 
-            return true
+            return valid
         }
     },
     methods: {
+        promptUserForWorkouts() {
+            this.$q.notify({
+                title: 'Not quite..!',
+                message: 'You need to add weights/reps for all exercises',
+                color: 'orange'
+            })
+        },
         addNewSet() {
             if (this.showExercises) this.showExercises = false
             this.workout.sets.push({
