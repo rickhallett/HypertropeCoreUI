@@ -22,16 +22,51 @@
                             <q-card class="">
                                 <q-list dense>
                                     <q-item v-for="col in props.cols" :key="col.name">
-                                        <q-item-section>
+                                        <q-item-section v-if="col.label !== 'Sets'">
                                             <q-item-label>{{ col.label }}</q-item-label>
                                         </q-item-section>
-                                        <q-item-section side>
+                                        <q-item-section v-else style="font-size: 10px; text-align: end">
+<!--                                            {{inspect(col.value)}}-->
+                                            <q-list v-for="set in col.value">
+                                                <q-list v-for="key in Object.keys(set)">
+                                                    {{key}}
+                                                </q-list>
+                                                <q-separator />
+                                            </q-list>
+
+                                        </q-item-section>
+                                        <q-item-section side v-if="col.label !== 'Sets'">
                                             <q-item-label caption>{{ col.value }}</q-item-label>
+                                        </q-item-section>
+                                        <q-item-section v-else style="font-size: 10px; ">
+                                            <q-list v-for="set in col.value">
+                                                <q-list v-for="val in Object.values(set)" style="color: #3aa6e3">
+                                                    {{val}}
+                                                </q-list>
+                                                <q-separator />
+                                            </q-list>
                                         </q-item-section>
                                     </q-item>
                                 </q-list>
+<!--                                <q-list dense>-->
+<!--                                    <q-item v-for="set in props.row.sets">-->
+<!--                                        {{set}}-->
+<!--                                    </q-item>-->
+<!--                                </q-list>-->
+<!--                                <q-table-->
+<!--                                    :data="props.row.sets"-->
+<!--                                    :colums="setColumns"-->
+<!--                                    row-key="name"-->
+<!--                                    hide-header-->
+<!--                                    hide-bottom-->
+<!--                                >-->
+
+<!--                                </q-table>-->
                             </q-card>
-                            <q-separator />
+
+
+
+                            <q-separator class="q-mt-xs" color="blue"/>
                         </div>
                     </template>
 
@@ -71,12 +106,15 @@
                 workoutColumns: [
                     {name: 'created', label: 'Date', field: 'created', sortable: true},
                     {name: 'totalVolume', label: 'Total Volume', field: 'totalVolume', sortable: true},
-                    {name: 'averageOneRm', label: 'Average 1RM', field: 'averageOneRm', sortable: true}
+                    {name: 'averageOneRm', label: 'Average 1RM', field: 'averageOneRm', sortable: true},
+                    {name: 'sets', label: 'Sets', field: 'sets'}
                 ],
                 setColumns: [
-                    {name: '', label: '', field: '', sortable: true},
-                    {name: '', label: '', field: '', sortable: true},
-                    {name: '', label: '', field: '', sortable: true},
+                    {name: 'exercise', label: 'Exercise', field: 'exercise'},
+                    {name: 'weight', label: 'Weight', field: 'weight'},
+                    {name: 'reps', label: 'Reps', field: 'reps'},
+                    {name: 'volume', label: 'Volume', field: 'volume'},
+                    {name: 'oneRm', label: '1RM', field: 'oneRm'},
                 ],
                 pagination: {
                     // sortBy: 'desc',
@@ -88,6 +126,9 @@
             }
         },
         methods: {
+            inspect(val) {
+                debugger;
+            },
             formatDate(rawDate) {
                 return moment(rawDate).format('DD-MM-YYYY hh:mm')
             },
@@ -107,7 +148,16 @@
                     return {
                         created: this.formatDate(w.created),
                         totalVolume: this.formatVolume(w.totalVolume),
-                        averageOneRm: this.formatOneRm(w.averageOneRm)
+                        averageOneRm: this.formatOneRm(w.averageOneRm),
+                        sets: w.sets.map(s => {
+                            return {
+                                Exercise: s.exercise,
+                                Weight: s.weight,
+                                Reps: s.reps,
+                                Volume: s.volume,
+                                '1RM': this.formatOneRm(s.oneRm)
+                            }
+                        })
                     }
                 })
                 console.log('formatted data:', this.formattedData)
