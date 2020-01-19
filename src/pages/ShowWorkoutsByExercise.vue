@@ -6,7 +6,31 @@
             </q-card-section>
 
             <q-card-section class="text-center">
-
+                <q-list v-for="(exercise, eIndex) in formattedData" :key="'ex' + eIndex">
+                    <q-item class="row justify-start" style="max-width: 150px" clickable @click="exercise.Active = !exercise.Active">
+                        <q-item-section avatar>
+                            <q-icon v-if="!exercise.Active" name="chevron_right"></q-icon>
+                            <q-icon v-else name="expand_more"></q-icon>
+                        </q-item-section>
+                        <q-item-section>{{exercise.Name}}</q-item-section>
+                    </q-item>
+                    <q-list v-if="exercise.Active" v-for="(set, sIndex) in exercise.Sets" :key="'set' + sIndex">
+                        <q-item>
+                            <q-item-section></q-item-section>
+                            <q-item-section style="font-size: 10px; text-align: end">
+                                <q-list v-for="(key, kIndex) in Object.keys(set)" :key="'key' + kIndex">
+                                    {{key}}
+                                </q-list>
+                            </q-item-section>
+                            <q-item-section style="font-size: 10px; text-align: start">
+                                <q-list v-for="(val, vIndex) in Object.values(set)" :key="'val' + vIndex" style="color: #3aa6e3">
+                                    {{val}}
+                                </q-list>
+                            </q-item-section>
+                        </q-item>
+                    </q-list>
+                    <q-separator class="q-mt-xs" color="blue"/>
+                </q-list>
             </q-card-section>
 
             <transition appear
@@ -27,6 +51,8 @@
 </template>
 
 <script>
+    import moment from 'moment'
+
     export default {
         name: "ShowWorkoutsByExercise",
         data() {
@@ -34,16 +60,50 @@
                 loading: false,
                 showCard: true,
                 showLogo: false,
-                rawData: null
+                rawData: [],
+                formattedData: []
+            }
+        },
+        methods: {
+            inspect(val) {
+                debugger;
+            },
+            formatDate(rawDate) {
+                return moment(rawDate).format('DD-MM-YYYY HH:mm')
+            },
+            formatVolume(rawVolume) {
+                return Math.floor(rawVolume)
+            },
+            formatOneRm(rawOneRm) {
+                return Number.parseFloat(rawOneRm).toFixed(2)
             }
         },
         created() {
             setTimeout(() => this.showLogo = true, 250)
 
-            this.$axios.get('https://localhost:5001/api/workout').then(res => {
-                console.log('response:', res)
-                this.rawData = res.data.data
-                console.log(this.rawData)
+            this.$axios.get('https://localhost:5001/api/workout/grouped/exercise').then(res => {
+                this.rawData = res.data.data.exercises
+                console.log('raw data:', this.rawData)
+
+                this.rawData.forEach(exercise => {
+                    this.formattedData.push({
+                        Name: exercise.name,
+                        Active: false,
+                        Sets: exercise.sets.map(set => {
+                            return {
+                                Date: this.formatDate(set.created),
+                                Exercise: set.exercise,
+                                Weight: set.weight,
+                                Reps: set.reps,
+                                Volume: this.formatVolume(set.volume),
+                                '1RM': this.formatOneRm(set.oneRm)
+
+                            }
+                        })
+                    })
+                })
+
+                console.log(this.formattedData)
             });
         }
     }
