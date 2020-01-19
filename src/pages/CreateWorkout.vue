@@ -51,14 +51,14 @@
                 <q-icon name="done" size="36px" color="positive" @click="saveWorkout"></q-icon>
             </q-card-section>
 
-<!--            <q-space/>-->
+            <q-space/>
 <!--            q-field row no-wrap items-start q-select q-field&#45;&#45;auto-height q-select&#45;&#45;without-input q-field&#45;&#45;standard q-field&#45;&#45;dense q-field&#45;&#45;dark-->
 <!--            q-field row no-wrap items-start q-select q-field&#45;&#45;auto-height q-select&#45;&#45;without-input q-field&#45;&#45;standard q-field&#45;&#45;float q-field&#45;&#45;dense q-field&#45;&#45;dark-->
 
             <transition appear
                         enter-active-class="animated fadeIn"
                         leave-active-class="animated fadeOut">
-                <div v-show="showLogo" class="flex flex-center log-logo" >
+                <div v-show="showLogo" class="flex flex-center">
                     <q-icon dense flat size="190px" name="donut_small" color="blue"/>
                 </div>
             </transition>
@@ -90,6 +90,19 @@ export default {
             }
         }
     },
+    computed: {
+        // TODO: find a way to validate data client side, this doesn't work
+        dataValid() {
+            if (this.workout.sets.length <= 0) return false
+
+            this.workout.sets.forEach(set => {
+                if (typeof set.weight === 'number') return false
+                if (typeof set.reps === 'number') return false
+            })
+
+            return true
+        }
+    },
     methods: {
         addNewSet() {
             if (this.showExercises) this.showExercises = false
@@ -114,10 +127,32 @@ export default {
                         reps: Number.parseInt(set.reps)
                     }
                 }),
-                notes: ''
+                notes: this.workout.notes
             }
 
-            this.$axios.post('https://localhost:5001/api/workout', payload).then(res => console.log(res))
+            this.$axios.post('https://localhost:5001/api/workout', payload)
+                .then(res => {
+                    console.log(res)
+                    if (res.status === 200) {
+                        this.$q.notify({
+                            message: 'Workout saved successfully',
+                            color: 'positive',
+                            position: 'bottom'
+                        })
+                    }
+                    this.workout = {
+                        selectedExercise: null,
+                        sets: [],
+                        notes: null
+                    }
+                }).catch(err => {
+                    this.$q.notify({
+                        message: 'Error: please let the dev know!',
+                        color: 'negative',
+                        position: 'bottom'
+                    })
+                    console.log(err)
+                })
         },
         getAbbrev(exerciseId) {
             return this.exercisesAvailable.find(e => e.value === exerciseId).abbrev
@@ -160,13 +195,13 @@ export default {
         font-size: 34px;
     }
 
-    .q-field--float {
-
+    .xxx {
+        display: none;
     }
 
-    /*.log-logo {*/
-    /*    opacity: 0.2;*/
-    /*}*/
+    .log-logo--dimmed {
+        opacity: 0.2;
+    }
 
     /*.log-logo:hover {*/
     /*    opacity: 1;*/

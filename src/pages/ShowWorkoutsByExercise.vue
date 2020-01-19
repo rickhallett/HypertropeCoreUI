@@ -2,7 +2,7 @@
     <q-page class="flex ">
         <q-card v-show="showCard" flat bordered class="card q-ma-md">
             <q-card-section>
-                <div class="text-h6 text-center">Raw Logs</div>
+                <div class="text-h6 text-center">Logs By Exercise</div>
             </q-card-section>
 
             <q-card-section class="text-center">
@@ -13,7 +13,7 @@
                         enter-active-class="animated fadeInUp"
                         leave-active-class="animated fadeOut">
                 <div v-show="showLogo" class="flex flex-center">
-                    <q-btn dense flat size="132px" icon="donut_small" color="blue"/>
+                    <q-btn dense flat size="132px" icon="donut_small" color="orange"/>
                 </div>
             </transition>
 
@@ -27,10 +27,8 @@
 </template>
 
 <script>
-    import moment from 'moment';
-
     export default {
-        name: "ShowWorkouts",
+        name: "ShowWorkoutsByExercise",
         data() {
             return {
                 loading: false,
@@ -46,13 +44,6 @@
                 console.log('response:', res)
                 this.rawData = res.data.data
                 console.log(this.rawData)
-
-                this.rawData.forEach(d => {
-                    let md = moment(d.created).unix()
-                    console.log(md)
-                    let dm = moment.unix(md)
-                    console.log(dm.format('DD-MM-YYYY:hhmm'))
-                })
             });
         }
     }

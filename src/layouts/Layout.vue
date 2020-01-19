@@ -41,13 +41,31 @@
                                     <q-item-label caption>Create a new workout</q-item-label>
                                 </q-item-section>
                             </q-item>
-                            <q-item clickable @click="$router.push( {path: '/workout/show'}).catch(err => {})">
+                            <q-item clickable @click="$router.push( {path: '/workout/show/raw'}).catch(err => {})">
                                 <q-item-section avatar>
                                     <q-icon name="list_alt"/>
                                 </q-item-section>
                                 <q-item-section>
                                     <q-item-label>List</q-item-label>
                                     <q-item-label caption>View all logs</q-item-label>
+                                </q-item-section>
+                            </q-item>
+                            <q-item clickable @click="$router.push( {path: '/workout/show/grouped'}).catch(err => {})">
+                                <q-item-section avatar>
+                                    <q-icon name="list_alt"/>
+                                </q-item-section>
+                                <q-item-section>
+                                    <q-item-label>List Grouped</q-item-label>
+                                    <q-item-label caption>Group logs by exercise type</q-item-label>
+                                </q-item-section>
+                            </q-item>
+                            <q-item clickable @click="$router.push( {path: '/workout/show/pb'}).catch(err => {})">
+                                <q-item-section avatar>
+                                    <q-icon name="list_alt"/>
+                                </q-item-section>
+                                <q-item-section>
+                                    <q-item-label>Personal Records</q-item-label>
+                                    <q-item-label caption>View best lifts</q-item-label>
                                 </q-item-section>
                             </q-item>
                         </q-list>
