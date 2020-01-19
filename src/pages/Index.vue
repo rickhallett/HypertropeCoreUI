@@ -67,8 +67,9 @@
             }
         },
         beforeCreate() {
+            console.log(`retrieving from: ${this.$domain}/api/quote`)
             setTimeout(() => {
-                this.$axios.get('https://localhost:5001/api/quote')
+                this.$axios.get(`${this.$domain}/api/quote`)
                     .then(res => {
                         this.quotes = res.data.quotes
                         console.log('quotes:', this.quotes)

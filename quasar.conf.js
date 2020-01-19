@@ -49,7 +49,7 @@ module.exports = function (ctx) {
           warning: '#f5dd9a'
         },
 
-        dark: false
+        dark: true
       }
     },
 
