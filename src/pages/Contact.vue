@@ -2,7 +2,7 @@
     <q-page class="flex ">
         <q-card v-show="showCard" flat bordered class="card q-ma-md">
             <q-card-section>
-                <div class="text-h6 text-center">Personal Bests</div>
+                <div class="text-h6 text-center">Contact</div>
             </q-card-section>
 
             <q-card-section class="text-center text-secondary">
@@ -13,7 +13,7 @@
                         enter-active-class="animated jello"
                         leave-active-class="animated fadeOut">
                 <div v-show="showLogo" class="flex flex-center">
-                    <q-btn dense flat size="132px" icon="donut_small" color="red"/>
+                    <q-btn dense flat size="132px" icon="donut_small" color="green"/>
                 </div>
             </transition>
 
@@ -28,7 +28,7 @@
 
 <script>
     export default {
-        name: "ShowWorkoutsByExercise",
+        name: "Contact",
         data() {
             return {
                 loading: false,

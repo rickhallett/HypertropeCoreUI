@@ -52,7 +52,7 @@
                             </q-item>
                             <q-item clickable @click="$router.push( {path: '/workout/show/grouped'}).catch(err => {})">
                                 <q-item-section avatar>
-                                    <q-icon name="list_alt"/>
+                                    <q-icon name="assignment"/>
                                 </q-item-section>
                                 <q-item-section>
                                     <q-item-label>List Grouped</q-item-label>
@@ -61,11 +61,29 @@
                             </q-item>
                             <q-item clickable @click="$router.push( {path: '/workout/show/pb'}).catch(err => {})">
                                 <q-item-section avatar>
-                                    <q-icon name="list_alt"/>
+                                    <q-icon name="assessment"/>
                                 </q-item-section>
                                 <q-item-section>
                                     <q-item-label>Personal Records</q-item-label>
                                     <q-item-label caption>View best lifts</q-item-label>
+                                </q-item-section>
+                            </q-item>
+                            <q-item clickable @click="$router.push( {path: '/quote/add'}).catch(err => {})">
+                                <q-item-section avatar>
+                                    <q-icon name="list_alt"/>
+                                </q-item-section>
+                                <q-item-section>
+                                    <q-item-label>Add a Quote</q-item-label>
+                                    <q-item-label caption>Focus your chi</q-item-label>
+                                </q-item-section>
+                            </q-item>
+                            <q-item clickable @click="$router.push( {path: '/support/contact'}).catch(err => {})">
+                                <q-item-section avatar>
+                                    <q-icon name="build"/>
+                                </q-item-section>
+                                <q-item-section>
+                                    <q-item-label>Support</q-item-label>
+                                    <q-item-label caption>Contact the dev</q-item-label>
                                 </q-item-section>
                             </q-item>
                         </q-list>

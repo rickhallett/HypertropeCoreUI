@@ -8,6 +8,8 @@ const routes = [
       { path: '/workout/show/raw', component: () => import('pages/ShowWorkouts.vue') },
       { path: '/workout/show/grouped', component: () => import('pages/ShowWorkoutsByExercise.vue') },
       { path: '/workout/show/pb', component: () => import('pages/ShowPBs.vue') },
+      { path: '/quote/add', component: () => import('pages/AddQuote.vue') },
+      { path: '/support/contact', component: () => import('pages/Contact.vue') },
     ]
   }
 ]

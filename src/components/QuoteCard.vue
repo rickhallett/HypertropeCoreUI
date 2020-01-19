@@ -2,6 +2,7 @@
     <div>
         <q-card-section class="q-pt-none">
             “{{body}}.”
+            <br>
             <span style="font-weight: bolder">~ {{author}}</span>
         </q-card-section>
         <q-separator inset />

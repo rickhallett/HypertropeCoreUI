@@ -26,21 +26,19 @@
                                             <q-item-label>{{ col.label }}</q-item-label>
                                         </q-item-section>
                                         <q-item-section v-else style="font-size: 10px; text-align: end">
-<!--                                            {{inspect(col.value)}}-->
-                                            <q-list v-for="set in col.value">
-                                                <q-list v-for="key in Object.keys(set)">
+                                            <q-list v-for="(set, i) in col.value" :key="'set' + i">
+                                                <q-list v-for="(key, j) in Object.keys(set)" :key="'key' + j">
                                                     {{key}}
                                                 </q-list>
                                                 <q-separator />
                                             </q-list>
-
                                         </q-item-section>
                                         <q-item-section side v-if="col.label !== 'Sets'">
                                             <q-item-label caption>{{ col.value }}</q-item-label>
                                         </q-item-section>
                                         <q-item-section v-else style="font-size: 10px; ">
-                                            <q-list v-for="set in col.value">
-                                                <q-list v-for="val in Object.values(set)" style="color: #3aa6e3">
+                                            <q-list v-for="(set, k) in col.value" :key="'setval' + k">
+                                                <q-list v-for="(val, l) in Object.values(set)" style="color: #3aa6e3" :key="'val' + l">
                                                     {{val}}
                                                 </q-list>
                                                 <q-separator />
@@ -48,23 +46,7 @@
                                         </q-item-section>
                                     </q-item>
                                 </q-list>
-<!--                                <q-list dense>-->
-<!--                                    <q-item v-for="set in props.row.sets">-->
-<!--                                        {{set}}-->
-<!--                                    </q-item>-->
-<!--                                </q-list>-->
-<!--                                <q-table-->
-<!--                                    :data="props.row.sets"-->
-<!--                                    :colums="setColumns"-->
-<!--                                    row-key="name"-->
-<!--                                    hide-header-->
-<!--                                    hide-bottom-->
-<!--                                >-->
-
-<!--                                </q-table>-->
                             </q-card>
-
-
 
                             <q-separator class="q-mt-xs" color="blue"/>
                         </div>
@@ -130,7 +112,7 @@
                 debugger;
             },
             formatDate(rawDate) {
-                return moment(rawDate).format('DD-MM-YYYY hh:mm')
+                return moment(rawDate).format('DD-MM-YYYY HH:mm')
             },
             formatVolume(rawVolume) {
                 return Math.floor(rawVolume)
