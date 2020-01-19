@@ -5,37 +5,37 @@
                 <div class="text-h6 text-center">Raw Logs</div>
             </q-card-section>
 
-            <q-card-section class="text-center">
+            <q-card-section class="">
                 <q-table
+                    grid
                     title="Workouts"
-                    :data="rawData"
+                    :data="formattedData"
                     :columns="workoutColumns"
                     :pagination.sync="pagination"
                     row-key="name"
                     no-data-label="No data. You need to workout more."
+                    hide-header
+                    hide-bottom
                 >
-                    <template v-slot:body="props">
-                        <q-tr :props="props">
-                            <q-td key="created" :props="props">
-                                <q-badge color="green">
-                                    {{ formatDate(props.row.created) }}
-                                </q-badge>
-                            </q-td>
-                            <q-td key="totalVolume" :props="props">
-                                <q-badge color="blue">
-                                    {{ formatVolume(props.row.totalVolume) }}
-                                </q-badge>
-                            </q-td>
-                            <q-td key="averageOneRm" :props="props">
-                                <q-badge color="red">
-                                    {{ formatOneRm(props.row.averageOneRm) }}
-                                </q-badge>
-                            </q-td>
-                        </q-tr>
+                    <template v-slot:item="props">
+                        <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-3 grid-style-transition">
+                            <q-card class="">
+                                <q-list dense>
+                                    <q-item v-for="col in props.cols" :key="col.name">
+                                        <q-item-section>
+                                            <q-item-label>{{ col.label }}</q-item-label>
+                                        </q-item-section>
+                                        <q-item-section side>
+                                            <q-item-label caption>{{ col.value }}</q-item-label>
+                                        </q-item-section>
+                                    </q-item>
+                                </q-list>
+                            </q-card>
+                            <q-separator />
+                        </div>
                     </template>
 
                 </q-table>
-
 
             </q-card-section>
 
@@ -67,6 +67,7 @@
                 showCard: true,
                 showLogo: false,
                 rawData: [],
+                formattedData: [],
                 workoutColumns: [
                     {name: 'created', label: 'Date', field: 'created', sortable: true},
                     {name: 'totalVolume', label: 'Total Volume', field: 'totalVolume', sortable: true},
@@ -78,30 +79,39 @@
                     {name: '', label: '', field: '', sortable: true},
                 ],
                 pagination: {
-                    sortBy: 'desc',
-                    descending: false,
-                    page: 2,
-                    rowsPerPage: 3,
-                    rowsNumber: 26
+                    // sortBy: 'desc',
+                    // descending: false,
+                    // page: 2,
+                    // rowsPerPage: 3,
+                    rowsNumber: null
                 }
             }
         },
         methods: {
             formatDate(rawDate) {
-                // return moment(rawDate).format('DD-MM-YYYY hh:mm')
-                return 1
+                return moment(rawDate).format('DD-MM-YYYY hh:mm')
             },
             formatVolume(rawVolume) {
                 return Math.floor(rawVolume)
             },
             formatOneRm(rawOneRm) {
-                return Math.floor(rawOneRm)
+                return Number.parseFloat(rawOneRm).toFixed(2)
             }
         },
         beforeCreate() {
             this.$axios.get('https://localhost:5001/api/workout/grouped/date').then(res => {
                 this.rawData = res.data.data
                 console.log('raw data:', this.rawData)
+                this.formattedData = this.rawData.map(w => {
+                    // debugger
+                    return {
+                        created: this.formatDate(w.created),
+                        totalVolume: this.formatVolume(w.totalVolume),
+                        averageOneRm: this.formatOneRm(w.averageOneRm)
+                    }
+                })
+                console.log('formatted data:', this.formattedData)
+
             });
 
             this.$axios.get('https://localhost:5001/api/workout/count').then(res => {
