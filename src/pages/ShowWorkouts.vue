@@ -30,7 +30,7 @@
                                                 <q-list v-for="(key, j) in Object.keys(set)" :key="'key' + j">
                                                     {{key}}
                                                 </q-list>
-                                                <q-separator />
+                                                <q-separator></q-separator>
                                             </q-list>
                                         </q-item-section>
                                         <q-item-section side v-if="col.label !== 'Sets'">
@@ -41,14 +41,14 @@
                                                 <q-list v-for="(val, l) in Object.values(set)" style="color: #3aa6e3" :key="'val' + l">
                                                     {{val}}
                                                 </q-list>
-                                                <q-separator />
+                                                <q-separator></q-separator>
                                             </q-list>
                                         </q-item-section>
                                     </q-item>
                                 </q-list>
                             </q-card>
 
-                            <q-separator class="q-mt-xs" color="blue"/>
+                            <q-separator class="q-mt-xs" color="blue"></q-separator>
                         </div>
                     </template>
 

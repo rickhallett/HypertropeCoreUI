@@ -5,6 +5,8 @@
                 <div class="text-h6 text-center">Log Your Focus...</div>
             </q-card-section>
 
+
+
             <q-card-section class="">
                 <q-select dense v-model="workout.selectedExercise" :options="exercisesAvailable" label="Exercise selection"></q-select>
 <!--                <q-btn  :icon="showExercises ? 'expand_more' : 'chevron_right'" class="full-width" @click="showExercises = !showExercises">Select Exercise</q-btn>-->
@@ -35,7 +37,7 @@
                 </q-card-section>
 
                 <div class="row q-mb-lg">
-                    <q-separator color="blue" :inset="true" class="q-mt-lg set-separator"/>
+                    <q-separator color="blue" :inset="true" class="q-mt-lg set-separator"></q-separator>
                     <q-icon name="donut_small" color="blue" size="18px" class="q-pr-md q-pt-lg"></q-icon>
                 </div>
 

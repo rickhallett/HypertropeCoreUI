@@ -97,7 +97,7 @@
         </q-header>
 
 
-        <q-page-container>
+        <q-page-container style="max-width: 375px">
             <router-view/>
         </q-page-container>
     </q-layout>
