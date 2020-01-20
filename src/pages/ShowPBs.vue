@@ -37,6 +37,11 @@
                 rawData: null
             }
         },
+        beforeCreate() {
+            if (window.outerWidth > 420) {
+                this.$router.push({ path: '/noview' }).catch(err => {})
+            }
+        },
         created() {
             setTimeout(() => this.showLogo = true, 250)
         }

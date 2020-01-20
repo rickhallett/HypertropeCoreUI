@@ -23,7 +23,7 @@
                             content-style="background-color: #3aa6e3"
                     >
                         <q-list>
-                            <q-item clickable @click="$router.push( {path: '/'}).catch(err => {})">
+                            <q-item clickable @click="$router.push( {path: '/app'}).catch(err => {})">
                                 <q-item-section avatar>
                                     <q-icon name="home"/>
                                 </q-item-section>
@@ -88,16 +88,11 @@
                             </q-item>
                         </q-list>
                     </q-menu>
-
                 </q-btn>
-
             </q-bar>
-
-
         </q-header>
 
-
-        <q-page-container style="max-width: 375px">
+        <q-page-container >
             <router-view/>
         </q-page-container>
     </q-layout>
@@ -117,8 +112,16 @@
                 this.$q.dark.toggle()
             },
             navToHome() {
-                this.$router.push({ path: '/' }).catch(err => {})
+                this.$router.push( {path: '/app'}).catch(err => {})
             }
+        },
+        beforeCreate() {
+            if (window.outerWidth > 420) {
+                this.$router.push({ path: '/noview' }).catch(err => {})
+            }
+        },
+        created() {
+
         }
     }
 </script>

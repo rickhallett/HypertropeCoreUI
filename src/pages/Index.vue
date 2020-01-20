@@ -67,6 +67,11 @@
             }
         },
         beforeCreate() {
+            if (window.outerWidth > 420) {
+                this.$router.push({ path: '/noview' }).catch(err => {})
+                return
+            }
+
             console.log(`retrieving from: ${this.$domain}/api/quote`)
             setTimeout(() => {
                 this.$axios.get(`${this.$domain}/api/quote`)

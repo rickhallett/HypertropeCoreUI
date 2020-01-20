@@ -23,6 +23,18 @@
       </q-card-section>
 
       <transition appear
+                  enter-active-class="animated fadeIn"
+                  leave-active-class="animated fadeOut">
+        <q-icon v-if="showRegisterSuccessIcon" name="face" color="yellow"></q-icon>
+      </transition>
+
+      <transition appear
+                  enter-active-class="animated fadeIn"
+                  leave-active-class="animated fadeOut">
+        <q-icon v-if="showRegisterFailureIcon" name="face" color="red"></q-icon>
+      </transition>
+
+      <transition appear
                   enter-active-class="animated jello"
                   leave-active-class="animated fadeOut">
         <div v-show="showLogo" class="flex flex-center">
@@ -40,8 +52,6 @@
 </template>
 
 <script>
-  import QuoteCard from "../components/QuoteCard"
-
   export default {
     name: 'Register',
     components: {
@@ -52,6 +62,8 @@
         loading: true,
         showCard: false,
         showLogo: false,
+        showRegisterSuccessIcon: false,
+        showRegisterFailureIcon: false,
         register: {
           firstname: null,
           lastname: null,
@@ -67,11 +79,12 @@
         this.$axios.post(`${this.$domain}/api/auth/register`, this.user)
             .then(res => {
               if (res.status === 200) {
-
+                this.showRegisterSuccessIcon = true
               }
             })
             .catch(err => {
-              if (res.status === 400) {
+              if (err.status === 400) {
+                this.showRegisterFailureIcon = true
                 // iterate ModelState
               }
             })

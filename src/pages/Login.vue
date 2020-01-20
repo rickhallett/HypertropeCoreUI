@@ -26,6 +26,12 @@
         </div>
       </transition>
 
+      <transition appear
+                  enter-active-class="animated fadeIn"
+                  leave-active-class="animated fadeOut">
+        <q-icon v-if="showLoginSuccessIcon" name="face"></q-icon>
+      </transition>
+
     </q-card>
 
     <q-inner-loading :showing="loading">
@@ -36,8 +42,6 @@
 </template>
 
 <script>
-  import QuoteCard from "../components/QuoteCard"
-
   export default {
     name: 'PageIndex',
     components: {
@@ -48,6 +52,7 @@
         loading: true,
         showCard: false,
         showLogo: false,
+        showLoginSuccessIcon: false,
         user: {
           username: null,
           password: null
@@ -60,6 +65,7 @@
             .then(res => {
               if (res.status === 200) {
                 const jToken = res.data.token
+                this.showLoginSuccessIcon = true
               }
             })
             .catch(err => {

@@ -1,6 +1,6 @@
 const routes = [
   {
-    path: '/',
+    path: '/app',
     component: () => import('layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
@@ -10,6 +10,15 @@ const routes = [
       { path: '/workout/show/pb', component: () => import('pages/ShowPBs.vue') },
       { path: '/quote/add', component: () => import('pages/AddQuote.vue') },
       { path: '/support/contact', component: () => import('pages/Contact.vue') },
+      { path: '/login', component: () => import('pages/Login.vue') },
+      { path: '/register', component: () => import('pages/Register.vue') },
+    ]
+  },
+  {
+    path: '/noview',
+    component: () => import('layouts/NoLayout.vue'),
+    children: [
+      { path: '/', component: () => import('pages/Warn.vue')}
     ]
   }
 ]

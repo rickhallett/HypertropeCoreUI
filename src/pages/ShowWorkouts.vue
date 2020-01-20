@@ -122,6 +122,11 @@
             }
         },
         beforeCreate() {
+            if (window.outerWidth > 420) {
+                this.$router.push({ path: '/noview' }).catch(err => {})
+                return
+            }
+
             this.$axios.get(`${this.$domain}/api/workout/grouped/date`).then(res => {
                 this.rawData = res.data.data
                 console.log('raw data:', this.rawData)
