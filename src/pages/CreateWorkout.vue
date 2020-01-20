@@ -6,16 +6,16 @@
             </q-card-section>
 
             <q-card-section class="">
-<!--                <q-select dense options-cover v-model="workout.selectedExercise" :options="exercisesAvailable"></q-select>-->
-                <q-btn  :icon="showExercises ? 'expand_more' : 'chevron_right'" class="full-width" @click="showExercises = !showExercises">Select Exercise</q-btn>
-                <q-slide-transition>
-                    <q-option-group
-                        v-show="showExercises"
-                        v-model="workout.selectedExercise"
-                        :options="exercisesAvailable"
-                        color="primary"
-                    />
-                </q-slide-transition>
+                <q-select dense v-model="workout.selectedExercise" :options="exercisesAvailable" label="Exercise selection"></q-select>
+<!--                <q-btn  :icon="showExercises ? 'expand_more' : 'chevron_right'" class="full-width" @click="showExercises = !showExercises">Select Exercise</q-btn>-->
+<!--                <q-slide-transition>-->
+<!--                    <q-option-group-->
+<!--                        v-show="showExercises"-->
+<!--                        v-model="workout.selectedExercise"-->
+<!--                        :options="exercisesAvailable"-->
+<!--                        color="primary">-->
+<!--                    </q-option-group>-->
+<!--                </q-slide-transition>-->
 
             </q-card-section>
 
@@ -42,7 +42,7 @@
             </div>
 
             <q-card-section v-show="workout.sets.length > 0">
-                <q-input v-model="workout.notes" autogrow placeholder="Notes..."/>
+                <q-input v-model="workout.notes" autogrow placeholder="Notes..."></q-input>
             </q-card-section>
 
             <q-card-section class="row justify-around">
@@ -52,7 +52,7 @@
                 <q-icon v-else name="info" size="36px" color="amber" @click="promptUserForWorkouts"></q-icon>
             </q-card-section>
 
-            <q-space/>
+            <q-space></q-space>
 <!--            q-field row no-wrap items-start q-select q-field&#45;&#45;auto-height q-select&#45;&#45;without-input q-field&#45;&#45;standard q-field&#45;&#45;dense q-field&#45;&#45;dark-->
 <!--            q-field row no-wrap items-start q-select q-field&#45;&#45;auto-height q-select&#45;&#45;without-input q-field&#45;&#45;standard q-field&#45;&#45;float q-field&#45;&#45;dense q-field&#45;&#45;dark-->
 
@@ -60,14 +60,14 @@
                         enter-active-class="animated fadeIn"
                         leave-active-class="animated fadeOut">
                 <div v-show="showLogo" class="flex flex-center">
-                    <q-icon dense flat size="190px" name="donut_small" color="blue"/>
+                    <q-icon dense flat size="190px" name="donut_small" color="blue"></q-icon>
                 </div>
             </transition>
 
         </q-card>
 
         <q-inner-loading :showing="loading">
-            <q-spinner-tail size="50px" color="primary"/>
+            <q-spinner-tail size="50px" color="primary"></q-spinner-tail>
         </q-inner-loading>
 
     </q-page>
@@ -115,11 +115,12 @@ export default {
         },
         addNewSet() {
             if (this.showExercises) this.showExercises = false
+            // debugger
             this.workout.sets.push({
-                exercise: this.workout.selectedExercise,
+                exercise: this.workout.selectedExercise.label,
                 weight: null,
                 reps: null,
-                abbrev: this.getAbbrev(this.workout.selectedExercise)
+                abbrev: this.getAbbrev(this.workout.selectedExercise.label)
             })
         },
         removeLastSet() {
@@ -163,8 +164,8 @@ export default {
                     console.log(err)
                 })
         },
-        getAbbrev(exerciseId) {
-            return this.exercisesAvailable.find(e => e.value === exerciseId).abbrev
+        getAbbrev(fullname) {
+            return this.exercisesAvailable.find(e => e.value === fullname).abbrev
         }
     },
     created() {
