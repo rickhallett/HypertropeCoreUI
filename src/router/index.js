@@ -3,12 +3,12 @@ import VueRouter from 'vue-router'
 
 import routes from './routes'
 
-Vue.prototype.$domain = 'https://localhost:5001'
-// Vue.prototype.$domain = 'https://hypertropecore3.azurewebsites.net'
-
-Vue.prototype.$scrWidth = 'max-width: 375px'
+// Vue.prototype.$domain = 'https://localhost:5001'
+Vue.prototype.$domain = 'https://hypertropecore3.azurewebsites.net'
 
 Vue.use(VueRouter)
+
+export const EventBus = new Vue()
 
 export default function (/* { store, ssrContext } */) {
   const Router = new VueRouter({

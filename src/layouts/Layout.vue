@@ -16,78 +16,9 @@
                 </div>
                 <q-space/>
                 <q-btn dense flat size="16px" icon="search" @click="showTitle = !showTitle"/>
+
                 <q-btn dense flat size="16px" icon="list">
-                    <q-menu transition-show="flip-right"
-                            transition-hide="flip-left"
-                            :offset="[0, 15]"
-                            content-style="background-color: #3aa6e3"
-                    >
-                        <q-list>
-                            <q-item clickable @click="$router.push( {path: '/app'}).catch(err => {})">
-                                <q-item-section avatar>
-                                    <q-icon name="home"/>
-                                </q-item-section>
-                                <q-item-section>
-                                    <q-item-label>HomePage</q-item-label>
-                                    <q-item-label caption>Show Homepage</q-item-label>
-                                </q-item-section>
-                            </q-item>
-                            <q-item clickable @click="$router.push( {path: '/workout/create'}).catch(err => {})">
-                                <q-item-section avatar>
-                                    <q-icon name="add"/>
-                                </q-item-section>
-                                <q-item-section>
-                                    <q-item-label>Create</q-item-label>
-                                    <q-item-label caption>Create a new workout</q-item-label>
-                                </q-item-section>
-                            </q-item>
-                            <q-item clickable @click="$router.push( {path: '/workout/show/raw'}).catch(err => {})">
-                                <q-item-section avatar>
-                                    <q-icon name="list_alt"/>
-                                </q-item-section>
-                                <q-item-section>
-                                    <q-item-label>List</q-item-label>
-                                    <q-item-label caption>View all logs</q-item-label>
-                                </q-item-section>
-                            </q-item>
-                            <q-item clickable @click="$router.push( {path: '/workout/show/grouped'}).catch(err => {})">
-                                <q-item-section avatar>
-                                    <q-icon name="assignment"/>
-                                </q-item-section>
-                                <q-item-section>
-                                    <q-item-label>List Grouped</q-item-label>
-                                    <q-item-label caption>Group logs by exercise type</q-item-label>
-                                </q-item-section>
-                            </q-item>
-                            <q-item clickable @click="$router.push( {path: '/workout/show/pb'}).catch(err => {})">
-                                <q-item-section avatar>
-                                    <q-icon name="assessment"/>
-                                </q-item-section>
-                                <q-item-section>
-                                    <q-item-label>Personal Records</q-item-label>
-                                    <q-item-label caption>View best lifts</q-item-label>
-                                </q-item-section>
-                            </q-item>
-                            <q-item clickable @click="$router.push( {path: '/quote/add'}).catch(err => {})">
-                                <q-item-section avatar>
-                                    <q-icon name="list_alt"/>
-                                </q-item-section>
-                                <q-item-section>
-                                    <q-item-label>Add a Quote</q-item-label>
-                                    <q-item-label caption>Focus your chi</q-item-label>
-                                </q-item-section>
-                            </q-item>
-                            <q-item clickable @click="$router.push( {path: '/support/contact'}).catch(err => {})">
-                                <q-item-section avatar>
-                                    <q-icon name="build"/>
-                                </q-item-section>
-                                <q-item-section>
-                                    <q-item-label>Support</q-item-label>
-                                    <q-item-label caption>Contact the dev</q-item-label>
-                                </q-item-section>
-                            </q-item>
-                        </q-list>
-                    </q-menu>
+                    <nav-menu :is-logged-in="isLoggedIn"></nav-menu>
                 </q-btn>
             </q-bar>
         </q-header>
@@ -99,12 +30,19 @@
 </template>
 
 <script>
+    import NavMenu from "../components/NavMenu";
+    import {EventBus} from "../router";
+
     export default {
         name: 'MyLayout',
+        components: {
+            NavMenu
+        },
         data() {
             return {
                 showTitle: true,
-                search: ''
+                search: '',
+                isLoggedIn: false
             }
         },
         methods: {
@@ -113,15 +51,43 @@
             },
             navToHome() {
                 this.$router.push( {path: '/app'}).catch(err => {})
+            },
+            loggedIn() {
+                console.log('flipping logged in switch to on')
+                this.isLoggedIn = true
+            },
+            loggedOut() {
+                console.log('flipping logged in switch to off')
+                this.isLoggedIn = false
             }
         },
+        computed: {
+
+        },
         beforeCreate() {
+            this.$axios.interceptors.request.use(
+                (config) => {
+                    let token = sessionStorage.getItem('jToken');
+
+                    if (token) {
+                        config.headers['Authorization'] = `Bearer ${token}`
+                    }
+
+                    return config
+                },
+
+                (error) => {
+                    return Promise.reject(error)
+                }
+            )
+
             if (window.outerWidth > 420) {
                 this.$router.push({ path: '/noview' }).catch(err => {})
             }
         },
         created() {
-
+            EventBus.$on('loggedIn', this.loggedIn)
+            EventBus.$on('loggedOut', this.loggedOut)
         }
     }
 </script>

@@ -36,6 +36,7 @@
 
 <script>
     import QuoteCard from "../components/QuoteCard";
+    import {EventBus} from "../router"
 
     export default {
         name: 'PageIndex',
@@ -53,7 +54,8 @@
         methods: {
             getRandomInt(max) {
                 return Math.floor(Math.random() * Math.floor(max))
-            }
+            },
+
         },
         computed: {
             quoteSelection() {
@@ -85,7 +87,7 @@
             }, 500)
         },
         created() {
-
+            EventBus.$emit('loggedIn')
         }
     }
 </script>

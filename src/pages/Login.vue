@@ -12,9 +12,9 @@
                 enter-active-class="animated fadeIn"
                 leave-active-class="animated fadeOut"
         >
-          <q-input dense v-model="user.username" placeholder="Username"></q-input>
-          <q-input dense v-model="user.password" placeholder="Password"></q-input>
-          <q-btn icon="fingerprint" color="blue" @click="login"></q-btn>
+          <q-input dense v-model="user.username" placeholder="Username" :key="'username'"></q-input>
+          <q-input dense v-model="user.password" placeholder="Password" :key="'password'" type="password"></q-input>
+          <q-btn icon="fingerprint" color="blue" :key="'icon'" size="18px" class="q-mt-md" @click="login"></q-btn>
         </transition-group>
       </q-card-section>
 
@@ -24,12 +24,6 @@
         <div v-show="showLogo" class="flex flex-center">
           <q-btn dense flat size="132px" icon="donut_small" color="blue"></q-btn>
         </div>
-      </transition>
-
-      <transition appear
-                  enter-active-class="animated fadeIn"
-                  leave-active-class="animated fadeOut">
-        <q-icon v-if="showLoginSuccessIcon" name="face"></q-icon>
       </transition>
 
     </q-card>
@@ -42,6 +36,8 @@
 </template>
 
 <script>
+  import {EventBus} from "../router"
+
   export default {
     name: 'PageIndex',
     components: {
@@ -52,7 +48,6 @@
         loading: true,
         showCard: false,
         showLogo: false,
-        showLoginSuccessIcon: false,
         user: {
           username: null,
           password: null
@@ -64,30 +59,32 @@
         this.$axios.post(`${this.$domain}/api/auth/login`, this.user)
             .then(res => {
               if (res.status === 200) {
+                console.log(res)
                 const jToken = res.data.token
-                this.showLoginSuccessIcon = true
+                window.sessionStorage.setItem('jToken', jToken)
+                this.$router.push({ path: 'app' }).catch(err => err)
               }
             })
             .catch(err => {
-              if (err.status === 401) {
+              console.log(err)
                 this.$q.notify({
                   message: 'Incorrect username/password',
                   color: 'negative'
                 })
-              }
             })
       }
     },
     computed: {},
     beforeCreate() {
       console.log(`Communicating with server endpoint @ ${this.$domain}/api/quote`)
+
       setTimeout(() => {
         this.loading = false
         this.showCard = true
       }, 500)
     },
     created() {
-
+      EventBus.$emit('loggedOut')
     }
   }
 </script>

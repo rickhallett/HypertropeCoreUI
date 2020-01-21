@@ -3,7 +3,7 @@
         <q-card v-show="showCard" flat bordered class="card q-ma-md">
             <q-card-section>
                 <div class="text-h6 text-center">Add a Quote</div>
-                <div class="text-secondary text-center">Focus your Chi</div>
+                <div class="text-secondary text-center">...to the community database!</div>
             </q-card-section>
 
             <q-card-section class="text-center text-secondary">

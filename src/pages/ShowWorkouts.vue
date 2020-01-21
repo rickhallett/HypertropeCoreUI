@@ -25,7 +25,7 @@
                                         <q-item-section v-if="col.label !== 'Sets'">
                                             <q-item-label>{{ col.label }}</q-item-label>
                                         </q-item-section>
-                                        <q-item-section v-else style="font-size: 10px; text-align: end">
+                                        <q-item-section v-else style="font-size: 11px; text-align: end">
                                             <q-list v-for="(set, i) in col.value" :key="'set' + i">
                                                 <q-list v-for="(key, j) in Object.keys(set)" :key="'key' + j">
                                                     {{key}}
@@ -36,7 +36,7 @@
                                         <q-item-section side v-if="col.label !== 'Sets'">
                                             <q-item-label caption>{{ col.value }}</q-item-label>
                                         </q-item-section>
-                                        <q-item-section v-else style="font-size: 10px; ">
+                                        <q-item-section v-else style="font-size: 11px; ">
                                             <q-list v-for="(set, k) in col.value" :key="'setval' + k">
                                                 <q-list v-for="(val, l) in Object.values(set)" style="color: #3aa6e3" :key="'val' + l">
                                                     {{val}}

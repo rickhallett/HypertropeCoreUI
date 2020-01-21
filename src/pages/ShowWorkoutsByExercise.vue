@@ -7,7 +7,7 @@
 
             <q-card-section class="text-center">
                 <q-list v-for="(exercise, eIndex) in formattedData" :key="'ex' + eIndex">
-                    <q-item class="row justify-start" style="max-width: 150px" clickable @click="exercise.Active = !exercise.Active">
+                    <q-item v-if="exercise.Sets.length > 0" class="row justify-start" style="max-width: 150px" clickable @click="exercise.Active = !exercise.Active">
                         <q-item-section avatar>
                             <q-icon v-if="!exercise.Active" name="chevron_right"></q-icon>
                             <q-icon v-else name="expand_more"></q-icon>
@@ -17,19 +17,19 @@
                     <q-list v-if="exercise.Active" v-for="(set, sIndex) in exercise.Sets" :key="'set' + sIndex">
                         <q-item>
                             <q-item-section style="color: #9ddeeb; font-size: 20px;">{{sIndex + 1}}</q-item-section>
-                            <q-item-section style="font-size: 10px; text-align: end">
+                            <q-item-section style="font-size: 11px; text-align: end">
                                 <q-list v-for="(key, kIndex) in Object.keys(set)" :key="'key' + kIndex">
                                     {{key}}
                                 </q-list>
                             </q-item-section>
-                            <q-item-section style="font-size: 10px; text-align: start">
+                            <q-item-section style="font-size: 11px; text-align: start">
                                 <q-list v-for="(val, vIndex) in Object.values(set)" :key="'val' + vIndex" style="color: #3aa6e3">
                                     {{val}}
                                 </q-list>
                             </q-item-section>
                         </q-item>
                     </q-list>
-                    <q-separator class="q-mt-xs" color="blue"/>
+                    <q-separator v-if="exercise.Sets.length > 0" class="q-mt-xs" color="blue"/>
                 </q-list>
             </q-card-section>
 
