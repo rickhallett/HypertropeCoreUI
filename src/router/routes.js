@@ -1,28 +1,30 @@
 const ifNotAuthenticated = (to, from, next) => {
-  // debugger
   if (!sessionStorage.getItem('jToken')) {
     next()
     return
   }
 
   next('/app')
-
-  // next()
 }
 
 const ifAuthenticated = (to, from, next) => {
-  // debugger
   if (sessionStorage.getItem('jToken')) {
     next()
     return
   }
 
   next('/login')
+}
 
-  // next()
+const redirectToApp = (to, from, next) => {
+  next('/app')
 }
 
 const routes = [
+  {
+    path: '/',
+    beforeEnter: redirectToApp
+  },
   {
     path: '/app',
     component: () => import('layouts/Layout.vue'),
