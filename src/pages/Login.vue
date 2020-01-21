@@ -3,10 +3,10 @@
     <q-card v-show="showCard" flat bordered class="card q-ma-md">
       <q-card-section>
         <div class="text-h6 text-center">Welcome to Hypertrope Core!</div>
-        <div class="text-h6 text-center">Please login</div>
+        <div class="text-h6 text-center text-secondary">Please login</div>
       </q-card-section>
 
-      <q-card-section class="text-center">
+      <q-card-section class="text-center q-mt-md">
         <transition-group
                 appear
                 enter-active-class="animated fadeIn"
