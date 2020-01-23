@@ -74,6 +74,7 @@
 </template>
 
 <script>
+    import {EventBus} from "../router"
     import moment from 'moment';
 
     export default {

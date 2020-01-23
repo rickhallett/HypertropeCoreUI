@@ -27,6 +27,8 @@
 </template>
 
 <script>
+    import {EventBus} from "../router"
+
     export default {
         name: "Contact",
         data() {

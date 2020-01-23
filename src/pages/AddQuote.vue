@@ -34,6 +34,8 @@
 </template>
 
 <script>
+    import {EventBus} from "../router"
+
     export default {
         name: "AddQuote",
         data() {
