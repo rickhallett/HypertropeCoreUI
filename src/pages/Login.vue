@@ -79,15 +79,6 @@
             .catch(err => {
               console.log(err)
 
-              // if (err.message === "Network Error") {
-              //   this.$q.notify({
-              //     message: 'Server down for maintenance',
-              //     color: 'red',
-              //     classes: 'notification'
-              //   })
-              //   return
-              // }
-
               this.$q.notify({
                 message: 'Incorrect username/password',
                 color: 'red',
