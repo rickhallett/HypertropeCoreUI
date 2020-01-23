@@ -14,7 +14,10 @@
         >
           <q-input dense v-model="user.username" placeholder="Username" :key="'username'"></q-input>
           <q-input dense v-model="user.password" placeholder="Password" :key="'password'" type="password"></q-input>
-          <q-btn icon="fingerprint" color="blue" :key="'icon'" size="18px" class="q-mt-md" @click="login"></q-btn>
+
+          <q-btn v-if="serverAvailable" icon="fingerprint" color="blue" :key="'icon'" size="18px" class="q-mt-md" @click="login"></q-btn>
+          <q-btn v-if="!serverAvailable" icon="fingerprint" color="red" :key="'icon'" size="18px" class="q-mt-md" @click="noLogin"></q-btn>
+
         </transition-group>
       </q-card-section>
 
@@ -45,6 +48,7 @@
     },
     data() {
       return {
+        serverAvailable: false,
         loading: true,
         showCard: false,
         showLogo: false,
@@ -55,8 +59,15 @@
       }
     },
     methods: {
+      noLogin() {
+        this.$q.notify({
+          message: 'Server not available',
+          color: 'red',
+          classes: 'notification'
+        })
+      },
       login() {
-        this.$axios.post(`${this.$domain}/api/auth/login`, this.user)
+        this.$axios.post(`${EventBus.$domain}/api/auth/login`, this.user)
             .then(res => {
               if (res.status === 200) {
                 console.log(res)
@@ -67,16 +78,27 @@
             })
             .catch(err => {
               console.log(err)
-                this.$q.notify({
-                  message: 'Incorrect username/password',
-                  color: 'negative'
-                })
+
+              // if (err.message === "Network Error") {
+              //   this.$q.notify({
+              //     message: 'Server down for maintenance',
+              //     color: 'red',
+              //     classes: 'notification'
+              //   })
+              //   return
+              // }
+
+              this.$q.notify({
+                message: 'Incorrect username/password',
+                color: 'red',
+                classes: 'notification'
+              })
             })
       }
     },
     computed: {},
     beforeCreate() {
-      console.log(`Communicating with server endpoint @ ${this.$domain}/api/quote`)
+      console.log(`Communicating with server endpoint @ ${EventBus.$domain}/api/quote`)
 
       setTimeout(() => {
         this.loading = false
@@ -85,6 +107,13 @@
     },
     created() {
       EventBus.$emit('loggedOut')
+
+      this.$axios.post(`${EventBus.$domain}/api/ping`)
+          .then(res => {
+            if (res.status === 200) {
+              this.serverAvailable = true
+            }
+          })
     }
   }
 </script>
@@ -93,4 +122,6 @@
   .card {
     min-width: 92%;
   }
+
+
 </style>

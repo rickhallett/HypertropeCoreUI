@@ -69,7 +69,7 @@
       register() {
         if (this.buttonReady) {
           this.buttonReady = false
-          this.$axios.post(`${this.$domain}/api/auth/register`, this.user)
+          this.$axios.post(`${EventBus.$domain}/api/auth/register`, this.user)
               .then(res => {
                 console.log(res)
 
@@ -78,7 +78,8 @@
                 if (res.status === 201) {
                   this.$q.notify({
                     message: 'Register successful',
-                    color: 'positive'
+                    color: 'green',
+                    classes: 'notification'
                   })
                   setTimeout(() => {
                     this.$router.push({ path: '/app' })
@@ -96,7 +97,8 @@
                       err.response.data[errorType].forEach(error => {
                         this.$q.notify({
                           message: error,
-                          color: 'negative'
+                          color: 'red',
+                          classes: 'notification'
                         })
                       })
                     }
@@ -110,7 +112,7 @@
     },
     computed: {},
     beforeCreate() {
-      console.log(`Communicating with server endpoint @ ${this.$domain}/api/quote`)
+      console.log(`Communicating with server endpoint @ ${EventBus.$domain}/api/quote`)
       setTimeout(() => {
         this.loading = false
         this.showCard = true

@@ -112,7 +112,8 @@ export default {
             this.$q.notify({
                 title: 'Not quite..!',
                 message: 'You need to add weights/reps for all exercises',
-                color: 'orange'
+                color: 'orange',
+                classes: 'notification'
             })
         },
         addNewSet() {
@@ -142,15 +143,16 @@ export default {
                 notes: this.workout.notes
             }
 
-            this.$axios.post(`${this.$domain}/api/workout`, payload)
+            this.$axios.post(`${EventBus.$domain}/api/workout`, payload)
                 .then(res => {
                     console.log(res)
                     if (res.status === 201) {
                         this.$q.notify({
                             message: 'Workout saved successfully',
-                            color: 'positive',
-                            position: 'bottom'
+                            color: 'green',
+                            classes: 'notification'
                         })
+                        this.$router.push({ path: '/workout/show'})
                     }
                     this.workout = {
                         selectedExercise: null,
@@ -160,8 +162,8 @@ export default {
                 }).catch(err => {
                     this.$q.notify({
                         message: 'Error: please let the dev know!',
-                        color: 'negative',
-                        position: 'bottom'
+                        color: 'red',
+                        classes: 'notification'
                     })
                     console.log(err)
                 })
@@ -178,7 +180,7 @@ export default {
     created() {
         setTimeout(() => this.showLogo = true, 500)
 
-        this.$axios.get(`${this.$domain}/api/exercise`).then(res => {
+        this.$axios.get(`${EventBus.$domain}/api/exercise`).then(res => {
             console.log(res)
             this.exercisesAvailable = res.data.exercises.map(ex => {
                 return {

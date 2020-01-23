@@ -29,18 +29,50 @@ const routes = [
     path: '/app',
     component: () => import('layouts/Layout.vue'),
     children: [
-      { path: '',
+      {
+        path: '',
         component: () => import('pages/Index.vue'),
         beforeEnter: ifAuthenticated
       },
-      { path: '/workout/create', component: () => import('pages/CreateWorkout.vue'), beforeEnter: ifAuthenticated },
-      { path: '/workout/show/raw', component: () => import('pages/ShowWorkouts.vue'), beforeEnter: ifAuthenticated },
-      { path: '/workout/show/grouped', component: () => import('pages/ShowWorkoutsByExercise.vue'), beforeEnter: ifAuthenticated },
-      { path: '/workout/show/pb', component: () => import('pages/ShowPBs.vue'), beforeEnter: ifAuthenticated },
-      { path: '/quote/add', component: () => import('pages/AddQuote.vue') },
-      { path: '/support/contact', component: () => import('pages/Contact.vue'), beforeEnter: ifAuthenticated },
-      { path: '/login', component: () => import('pages/Login.vue'), beforeEnter: ifNotAuthenticated },
-      { path: '/register', component: () => import('pages/Register.vue'), beforeEnter: ifNotAuthenticated },
+      {
+        path: '/workout/create',
+        component: () => import('pages/CreateWorkout.vue'),
+        beforeEnter: ifAuthenticated
+      },
+      {
+        path: '/workout/show/raw',
+        component: () => import('pages/ShowWorkouts.vue'),
+        beforeEnter: ifAuthenticated
+      },
+      {
+        path: '/workout/show/grouped',
+        component: () => import('pages/ShowWorkoutsByExercise.vue'),
+        beforeEnter: ifAuthenticated
+      },
+      {
+        path: '/workout/show/pb',
+        component: () => import('pages/ShowPBs.vue'),
+        beforeEnter: ifAuthenticated
+      },
+      {
+        path: '/quote/add',
+        component: () => import('pages/AddQuote.vue')
+      },
+      {
+        path: '/support/contact',
+        component: () => import('pages/Contact.vue'),
+        beforeEnter: ifAuthenticated
+      },
+      {
+        path: '/login',
+        component: () => import('pages/Login.vue'),
+        beforeEnter: ifNotAuthenticated
+      },
+      {
+        path: '/register',
+        component: () => import('pages/Register.vue'),
+        beforeEnter: ifNotAuthenticated
+      },
     ]
   },
   {

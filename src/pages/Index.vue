@@ -74,9 +74,9 @@
                 return
             }
 
-            console.log(`retrieving from: ${this.$domain}/api/quote`)
+            console.log(`retrieving from: ${EventBus.$domain}/api/quote`)
             setTimeout(() => {
-                this.$axios.get(`${this.$domain}/api/quote`)
+                this.$axios.get(`${EventBus.$domain}/api/quote`)
                     .then(res => {
                         this.quotes = res.data.quotes
                         console.log('quotes:', this.quotes)

@@ -127,7 +127,7 @@
                 return
             }
 
-            this.$axios.get(`${this.$domain}/api/workout/grouped/date`).then(res => {
+            this.$axios.get(`${EventBus.$domain}/api/workout/grouped/date`).then(res => {
                 this.rawData = res.data.data
                 console.log('raw data:', this.rawData)
                 this.formattedData = this.rawData.map(w => {
@@ -151,7 +151,7 @@
 
             });
 
-            this.$axios.get(`${this.$domain}/api/workout/count`).then(res => {
+            this.$axios.get(`${EventBus.$domain}/api/workout/count`).then(res => {
                 this.pagination.rowsNumber = res.data.workoutCount
                 console.log('pagination.rowsNumber:', this.pagination.rowsNumber)
             });

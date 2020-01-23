@@ -59,13 +59,13 @@
                     author: this.quote.author
                 }
 
-                this.$axios.post(`${this.$domain}/api/quote`, payload)
+                this.$axios.post(`${EventBus.$domain}/api/quote`, payload)
                     .then(res => {
                         if (res.status === 201) {
                             this.$q.notify({
                                 message: 'Quote added',
-                                color: 'positive',
-                                classes: 'post-notify'
+                                color: 'green',
+                                classes: 'notification'
                             })
                         }
                     })
@@ -73,7 +73,8 @@
                         console.log(err)
                         this.$q.notify({
                             message: 'Error increasing Chi. Contact dev',
-                            color: 'negative'
+                            color: 'red',
+                            classes: 'notification'
                         })
                     })
             }

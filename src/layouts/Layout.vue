@@ -71,6 +71,12 @@
 
         },
         beforeCreate() {
+            if (window.location.href.split(':')[1] === '//localhost') {
+                EventBus.$domain = 'https://localhost:5001'
+            } else {
+                EventBus.$domain = 'https://hypertropecore3.azurewebsites.net'
+            }
+
             this.$axios.interceptors.request.use(
                 (config) => {
                     let token = sessionStorage.getItem('jToken');
@@ -110,5 +116,9 @@
         font-weight: bolder;
         color: #3aa6e3;
         padding-left: 2px;
+    }
+
+    .notification {
+        text-align: center;
     }
 </style>
