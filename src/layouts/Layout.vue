@@ -1,27 +1,32 @@
 <template>
     <q-layout view="lHh Lpr lFf" dark>
-        <q-header elevated>
+        <transition appear
+            appear-active-class="animated slideInDown"
+            leave-active-class="animated slideOutUp">
 
-            <q-bar style="height: 50px;">
-                <q-btn dense flat size="16px" icon="donut_small" @click="toggleDarkMode"/>
-                <div v-show="showTitle" class="text-weight-bold text-secondary app-header row" @click="navToHome">
-                    <div class="app-header--hyper">Hypertrope</div>
-                    <div class="app-header--core">Core</div>
-                </div>
-                <div v-show="!showTitle" class="text-weight-bold text-secondary">
-                    <q-input dense autofocus clearable v-model="search"
-                             filled type="search" placeholder="Search..."
-                             @blur="showTitle = true">
-                    </q-input>
-                </div>
-                <q-space/>
-                <q-btn dense flat size="16px" icon="search" @click="showTitle = !showTitle"/>
+            <q-header elevated>
+                <q-bar style="height: 50px;">
+                    <q-btn dense flat size="16px" icon="donut_small" @click="toggleDarkMode"></q-btn>
+                    <div v-show="showTitle" class="text-weight-bold text-secondary app-header row" @click="navToHome">
+                        <div class="app-header--hyper">Hypertrope</div>
+                        <div class="app-header--core">Core</div>
+                    </div>
+                    <div v-show="!showTitle" class="text-weight-bold text-secondary">
+                        <q-input dense autofocus clearable v-model="search"
+                                 filled type="search" placeholder="Search..."
+                                 @blur="showTitle = true">
+                        </q-input>
+                    </div>
+                    <q-space/>
+                    <q-btn dense flat size="16px" icon="search" @click="showTitle = !showTitle"></q-btn>
 
-                <q-btn dense flat size="16px" icon="list">
-                    <nav-menu :is-logged-in="isLoggedIn"></nav-menu>
-                </q-btn>
-            </q-bar>
-        </q-header>
+                    <q-btn dense flat size="16px" icon="list">
+                        <nav-menu :is-logged-in="isLoggedIn"></nav-menu>
+                    </q-btn>
+                </q-bar>
+            </q-header>
+
+        </transition>
 
         <q-page-container >
             <router-view/>
@@ -41,6 +46,7 @@
         data() {
             return {
                 showTitle: true,
+                showHeader: true,
                 search: '',
                 isLoggedIn: false
             }
@@ -88,6 +94,8 @@
         created() {
             EventBus.$on('loggedIn', this.loggedIn)
             EventBus.$on('loggedOut', this.loggedOut)
+            EventBus.$on('hideHeader', () => this.showHeader = false)
+            EventBus.$on('showHeader', () => this.showHeader = true)
         }
     }
 </script>

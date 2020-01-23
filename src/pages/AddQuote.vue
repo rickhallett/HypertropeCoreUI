@@ -61,9 +61,9 @@
 
                 this.$axios.post(`${this.$domain}/api/quote`, payload)
                     .then(res => {
-                        if (res.status === 200) {
+                        if (res.status === 201) {
                             this.$q.notify({
-                                message: 'Chi Increased',
+                                message: 'Quote added',
                                 color: 'positive',
                                 classes: 'post-notify'
                             })

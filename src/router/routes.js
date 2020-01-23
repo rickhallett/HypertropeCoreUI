@@ -29,7 +29,10 @@ const routes = [
     path: '/app',
     component: () => import('layouts/Layout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue'), beforeEnter: ifAuthenticated },
+      { path: '',
+        component: () => import('pages/Index.vue'),
+        beforeEnter: ifAuthenticated
+      },
       { path: '/workout/create', component: () => import('pages/CreateWorkout.vue'), beforeEnter: ifAuthenticated },
       { path: '/workout/show/raw', component: () => import('pages/ShowWorkouts.vue'), beforeEnter: ifAuthenticated },
       { path: '/workout/show/grouped', component: () => import('pages/ShowWorkoutsByExercise.vue'), beforeEnter: ifAuthenticated },

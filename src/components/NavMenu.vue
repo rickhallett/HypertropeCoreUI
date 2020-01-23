@@ -5,7 +5,7 @@
             content-style="background-color: #3aa6e3"
     >
         <q-list>
-            <q-item v-if="isLoggedIn" clickable @click="$router.push( {path: '/app'}).catch(err => {})">
+            <q-item v-if="isLoggedIn" clickable @click="navTo('/app')">
                 <q-item-section avatar>
                     <q-icon name="home"/>
                 </q-item-section>
@@ -110,6 +110,8 @@
 </template>
 
 <script>
+    import {EventBus} from "../router"
+
     export default {
         name: "NavMenu",
         props: {
@@ -130,6 +132,10 @@
             logout() {
                 window.sessionStorage.removeItem('jToken')
                 this.$router.push( {path: '/login'}).catch(err => {})
+            },
+            navTo(href) {
+                EventBus.$emit('hideHeader')
+                this.$router.push( {path: href}).catch(err => {})
             }
         },
         created() {

@@ -145,7 +145,7 @@ export default {
             this.$axios.post(`${this.$domain}/api/workout`, payload)
                 .then(res => {
                     console.log(res)
-                    if (res.status === 200) {
+                    if (res.status === 201) {
                         this.$q.notify({
                             message: 'Workout saved successfully',
                             color: 'positive',

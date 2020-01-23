@@ -18,7 +18,10 @@
           <q-input dense v-model="user.password" placeholder="Password" type="password" :key="'password'"></q-input>
           <q-input dense v-model="user.email" placeholder="Email" :key="'email'"></q-input>
           <q-input dense v-model="user.phonenumber" placeholder="Phone number" :key="'phonenumber'"></q-input>
-          <q-btn icon="fingerprint" color="blue" @click="register" size="18px" :key="'register'" class="q-mt-md"></q-btn>
+
+          <q-btn v-if="buttonReady" icon="fingerprint" color="blue" @click="register" size="18px" :key="'register'" class="q-mt-md"></q-btn>
+          <q-btn v-if="!buttonReady" icon="fingerprint" color="orange" @click="register" size="18px" :key="'register'" class="q-mt-md"></q-btn>
+
         </transition-group>
       </q-card-section>
 
@@ -50,6 +53,7 @@
         loading: true,
         showCard: false,
         showLogo: false,
+        buttonReady: true,
         user: {
           firstname: null,
           lastname: null,
@@ -63,34 +67,45 @@
     },
     methods: {
       register() {
-        this.$axios.post(`${this.$domain}/api/auth/register`, this.user)
-            .then(res => {
-              console.log(res)
-              if (res.status === 201) {
-                this.$q.notify({
-                  message: 'Register successful',
-                  color: 'positive'
-                })
-                setTimeout(() => {
-                  this.$router.push({ path: '/app' })
-                }, 1000)
-              }
-            })
-            .catch(err => {
-              console.log(err)
-              if (err.response.status === 400) {
-                for (let errorType in err.response.data) {
-                  if(err.response.data.hasOwnProperty(errorType)) {
-                    err.response.data[errorType].forEach(error => {
-                      this.$q.notify({
-                        message: error,
-                        color: 'negative'
+        if (this.buttonReady) {
+          this.buttonReady = false
+          this.$axios.post(`${this.$domain}/api/auth/register`, this.user)
+              .then(res => {
+                console.log(res)
+
+                setTimeout(() => this.buttonReady = true, 3000)
+
+                if (res.status === 201) {
+                  this.$q.notify({
+                    message: 'Register successful',
+                    color: 'positive'
+                  })
+                  setTimeout(() => {
+                    this.$router.push({ path: '/app' })
+                  }, 1000)
+                }
+              })
+              .catch(err => {
+                console.log(err)
+
+                setTimeout(() => this.buttonReady = true, 3000)
+
+                if (err.response.status === 400) {
+                  for (let errorType in err.response.data) {
+                    if(err.response.data.hasOwnProperty(errorType)) {
+                      err.response.data[errorType].forEach(error => {
+                        this.$q.notify({
+                          message: error,
+                          color: 'negative'
+                        })
                       })
-                    })
+                    }
                   }
                 }
-              }
-            })
+              })
+        }
+
+
       }
     },
     computed: {},
